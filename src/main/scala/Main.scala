@@ -1,9 +1,11 @@
+import ai.bale.commons.BotConfig
 import ai.bale.poshtiban.PoshtibanBot
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 object Main extends App {
+  BotConfig.load()
   val bot = new PoshtibanBot("ca0c0e3ff745f4977f5702743d6b0461d79c9063")
   val eol = bot.run()
   println("Press [ENTER] to shutdown the bot, it may take a few seconds...")
