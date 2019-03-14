@@ -6,6 +6,8 @@ import akka.event.Logging
 import com.bot4s.telegram.api.declarative.Commands
 import com.bot4s.telegram.methods.{ SendInvoice, SendMessage }
 import com.bot4s.telegram.models._
+import com.typesafe.config.ConfigFactory
+import org.slf4j.LoggerFactory
 
 class PoshtibanBot(token: String) extends ExampleBot(token)
   with FixedBalePolling
@@ -13,8 +15,9 @@ class PoshtibanBot(token: String) extends ExampleBot(token)
   with PerChatState[String] {
 
   override val system: ActorSystem = _system
-  private val config = system.settings.config
-  private val log = Logging(system, getClass)
+
+  private val string = ConfigFactory.parseResources("string.conf")
+
   private def invoice(msg: Message): Unit = {
     request(SendInvoice(
       chatId = msg.source,
@@ -31,8 +34,8 @@ class PoshtibanBot(token: String) extends ExampleBot(token)
           label = "حمل و نقل",
           200))))
   }
-  val NEW_BOT = config.getString("message.new-bot")
-  val MANAGE_BOT = config.getString("message.manage-bot")
+  val NEW_BOT = string.getString("new-bot")
+  val MANAGE_BOT = string.getString("manage-bot")
 
   val YES = "بله"
   val NO = "خیر"
@@ -42,7 +45,7 @@ class PoshtibanBot(token: String) extends ExampleBot(token)
   val returnButton = KeyboardButton(RETURN)
   override def receiveMessage(message: Message): Unit = {
     implicit val msg: Message = message
-    log.debug("Message text: {}", msg.text)
+    logger.debug("Message text: {}", msg.text)
     if (msg.successfulPayment.isDefined) {
       request(SendMessage(msg.source, "بازوی شما با آدرس @... ایجاد شد."))
     }
@@ -51,11 +54,11 @@ class PoshtibanBot(token: String) extends ExampleBot(token)
         val newBot = KeyboardButton(NEW_BOT)
         val manageBot = KeyboardButton(MANAGE_BOT)
         replyMd(
-          text = config.getString("message.start"),
+          text = string.getString("start"),
           replyMarkup = Some(ReplyKeyboardMarkup.singleRow(Seq(newBot, manageBot))))
 
       case Some(txt) if txt.contains(NEW_BOT) ⇒
-        log.debug("new bot state")
+        logger.debug("new bot state")
         request(SendMessage(msg.source, "لطفا نام بازو را وارد کنید."))
         setChatState("NEW_BOT")
 

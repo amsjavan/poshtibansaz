@@ -3,6 +3,7 @@ package ai.bale.core
 import com.bot4s.telegram.api.{ BotBase, BotExecutionContext }
 import com.bot4s.telegram.methods.{ DeleteWebhook, GetMe, GetUpdates }
 import com.bot4s.telegram.models.Update
+import org.slf4j.LoggerFactory
 import slogging.StrictLogging
 
 import scala.concurrent.Future
@@ -71,7 +72,6 @@ trait BalePolling extends BotBase with BotExecutionContext with StrictLogging {
             case NonFatal(e) ⇒
               // Log and swallow, exception handling should happen on receiveUpdate.
               logger.error(s"receiveUpdate failed while processing: $u", e)
-              e.printStackTrace()
           }
         }
 
