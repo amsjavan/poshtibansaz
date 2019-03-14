@@ -1,5 +1,5 @@
-import ai.bale.commons.BotConfig
-import ai.bale.poshtiban.PoshtibanBot
+import ai.bale.poshtiban.commons.BotConfig
+import ai.bale.poshtiban.core.PoshtibanBot
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

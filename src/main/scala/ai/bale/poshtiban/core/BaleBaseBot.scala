@@ -1,13 +1,13 @@
-package ai.bale.poshtiban
+package ai.bale.poshtiban.core
 
-import ai.bale.sdk.BaleAkkaHttpClient
+import ai.bale.poshtiban.sdk.BaleAkkaHttpClient
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.bot4s.telegram.api.TelegramBot
 import slogging.{ LogLevel, LoggerConfig, PrintLoggerFactory }
 import slogging._
 
-abstract class ExampleBot(val token: String) extends TelegramBot {
+abstract class BaleBaseBot(val token: String) extends TelegramBot {
   LoggerConfig.factory = SLF4JLoggerFactory()
   LoggerConfig.level = LogLevel.DEBUG
 

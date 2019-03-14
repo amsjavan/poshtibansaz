@@ -1,48 +1,24 @@
-package ai.bale.poshtiban
+package ai.bale.poshtiban.core
 
-import ai.bale.sdk.{ FixedBalePolling, PerChatState }
+import ai.bale.poshtiban.sdk.{ FixedBalePolling, PerChatState }
 import akka.actor.ActorSystem
-import akka.event.Logging
 import com.bot4s.telegram.api.declarative.Commands
 import com.bot4s.telegram.methods.{ SendInvoice, SendMessage }
 import com.bot4s.telegram.models._
-import com.typesafe.config.ConfigFactory
-import org.slf4j.LoggerFactory
 
-class PoshtibanBot(token: String) extends ExampleBot(token)
+class PoshtibanBot(token: String) extends BaleBaseBot(token)
   with FixedBalePolling
   with Commands
   with PerChatState[String] {
 
   override val system: ActorSystem = _system
 
-  private val string = ConfigFactory.parseResources("string.conf")
+  import ai.bale.poshtiban.misc.Strings._
 
-  private def invoice(msg: Message): Unit = {
-    request(SendInvoice(
-      chatId = msg.source,
-      title = "salam",
-      description = "desc",
-      payload = "d",
-      providerToken = "6219861032590043", startParameter = "6219861032590043",
-      currency = Currency.THB,
-      prices = Array(
-        LabeledPrice(
-          label = "مالیات",
-          100),
-        LabeledPrice(
-          label = "حمل و نقل",
-          200))))
-  }
-  val NEW_BOT = string.getString("new-bot")
-  val MANAGE_BOT = string.getString("manage-bot")
-
-  val YES = "بله"
-  val NO = "خیر"
-  val RETURN = "بازگشت"
   val yesButton = KeyboardButton(YES)
   val noButton = KeyboardButton(NO)
   val returnButton = KeyboardButton(RETURN)
+
   override def receiveMessage(message: Message): Unit = {
     implicit val msg: Message = message
     logger.debug("Message text: {}", msg.text)
@@ -54,7 +30,7 @@ class PoshtibanBot(token: String) extends ExampleBot(token)
         val newBot = KeyboardButton(NEW_BOT)
         val manageBot = KeyboardButton(MANAGE_BOT)
         replyMd(
-          text = string.getString("start"),
+          text = START,
           replyMarkup = Some(ReplyKeyboardMarkup.singleRow(Seq(newBot, manageBot))))
 
       case Some(txt) if txt.contains(NEW_BOT) ⇒
