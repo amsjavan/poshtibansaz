@@ -1,5 +1,6 @@
 package ai.bale.poshtiban.core
 
+import ai.bale.poshtiban.commons.FileHelper
 import ai.bale.poshtiban.persist.RocksExtension
 import ai.bale.poshtiban.sdk.{ FixedBalePolling, PerChatState }
 import akka.actor.ActorSystem
@@ -25,10 +26,14 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
   override def receiveMessage(message: Message): Unit = {
     implicit val msg: Message = message
     logger.debug("Message text: {}", msg.text)
+
     if (msg.successfulPayment.isDefined) {
       request(SendMessage(msg.source, "بازوی شما در حال ایجاد شدن است"))
+      Processor.removeOldDockers
+      Thread.sleep(1000)
       DockerHelper.createDocker(msg.chat.id.toString, userToken)
       request(SendMessage(msg.source, "بازوی شما ایجاد شد."))
+      FileHelper.deleteRecursively(new java.io.File("rocksdb"))
     }
     msg.text match {
       case Some(txt) if txt.startsWith("/start") ⇒
@@ -83,7 +88,7 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
               300))))
         setChatState("PARDAKHT")
 
-      case _ => logger.warn("Unmatched")
+      case _ ⇒ logger.warn("Unmatched")
     }
   }
 }

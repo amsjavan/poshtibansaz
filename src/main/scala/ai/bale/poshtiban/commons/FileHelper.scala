@@ -1,6 +1,6 @@
 package ai.bale.poshtiban.commons
 
-import java.io.FileNotFoundException
+import java.io.{ File, FileNotFoundException }
 
 import scala.io.Source
 import scala.util.Try
@@ -18,5 +18,12 @@ object FileHelper {
     pw.write(content)
     pw.close
     f.getPath
+  }
+
+  def deleteRecursively(file: File): Unit = {
+    if (file.isDirectory)
+      file.listFiles.foreach(deleteRecursively)
+    if (file.exists && !file.delete)
+      throw new Exception(s"Unable to delete ${file.getAbsolutePath}")
   }
 }
