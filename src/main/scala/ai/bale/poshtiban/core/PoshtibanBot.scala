@@ -1,5 +1,6 @@
 package ai.bale.poshtiban.core
 
+import ai.bale.poshtiban.persist.RocksExtension
 import ai.bale.poshtiban.sdk.{ FixedBalePolling, PerChatState }
 import akka.actor.ActorSystem
 import com.bot4s.telegram.api.declarative.Commands
@@ -19,11 +20,15 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
   val noButton = KeyboardButton(NO)
   val returnButton = KeyboardButton(RETURN)
 
+  var userToken: String = _
+
   override def receiveMessage(message: Message): Unit = {
     implicit val msg: Message = message
     logger.debug("Message text: {}", msg.text)
     if (msg.successfulPayment.isDefined) {
-      request(SendMessage(msg.source, "بازوی شما با آدرس @... ایجاد شد."))
+      request(SendMessage(msg.source, "بازوی شما در حال ایجاد شدن است"))
+      DockerHelper.createDocker(msg.chat.id.toString, userToken)
+      request(SendMessage(msg.source, "بازوی شما ایجاد شد."))
     }
     msg.text match {
       case Some(txt) if txt.startsWith("/start") ⇒
@@ -42,6 +47,7 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
         request(SendMessage(msg.source, "در حال آماده سازی..."))
 
       case Some(txt) if getChatState.exists(_.equals("BOT_TOKEN")) ⇒
+        userToken = txt
         replyMd(
           text = "آیا بازوی شما دارای بخش سوالات متداول باشد؟",
           replyMarkup = Some(ReplyKeyboardMarkup.singleRow(Seq(yesButton, noButton, returnButton))))
@@ -77,6 +83,7 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
               300))))
         setChatState("PARDAKHT")
 
+      case _ => logger.warn("Unmatched")
     }
   }
 }
