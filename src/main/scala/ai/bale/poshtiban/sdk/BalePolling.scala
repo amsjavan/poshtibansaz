@@ -1,4 +1,4 @@
-package ai.bale.sdk
+package ai.bale.poshtiban.sdk
 
 import com.bot4s.telegram.api.{ BotBase, BotExecutionContext }
 import com.bot4s.telegram.methods.{ DeleteWebhook, GetMe, GetUpdates }

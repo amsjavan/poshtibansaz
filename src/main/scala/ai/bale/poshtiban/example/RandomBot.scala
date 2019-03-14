@@ -1,4 +1,4 @@
-package ai.bale.example
+package ai.bale.poshtiban.example
 
 import com.bot4s.telegram.api.declarative.Commands
 import com.bot4s.telegram.api.{ Polling, TelegramBot }

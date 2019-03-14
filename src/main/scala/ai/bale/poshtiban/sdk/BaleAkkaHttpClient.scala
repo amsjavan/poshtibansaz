@@ -1,4 +1,4 @@
-package ai.bale.sdk
+package ai.bale.poshtiban.sdk
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
