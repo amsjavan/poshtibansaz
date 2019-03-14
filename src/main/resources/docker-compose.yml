@@ -1,0 +1,50 @@
+version: '2'
+services:
+  pg_hrtc_support_bot:
+    image: docker.bale.ai/bot/balepostgres:1.6.0
+    container_name: pg_hrtc_support_bot
+    environment:
+      - POSTGRES_USER=hrtc_support_bot
+      - POSTGRES_PASSWORD=sdhglgslahglaskjdfsfglashg@lsakjgs1231
+      - POSTGRES_DB=hrtc_support_db
+      - TZ=Asia/Tehran
+    ports:
+      - 5416:5432
+    volumes:
+      - /home/elenoon/docker/pg_hrtc_support_bot/volume/postgres/:/var/lib/postgresql/data/
+
+  hrtc_support_bot:
+    image: docker.bale.ai/bot/hrtc_support_bot:1.2-8
+    container_name: hrtc_support_bot
+    restart: always
+    environment:
+      # PostgreSQL Config
+      - POSTGRES_USER=hrtc_support_bot
+      - POSTGRES_PASSWORD=sdhglgslahglaskjdfsfglashg@lsakjgs1231
+      - POSTGRES_DB=hrtc_support_db
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=pg_hrtc_support_bot
+      # Config
+      - BASE_URL=wss://api.bale.ai/v1/bots/
+      - TOKEN=token-id
+      - GROUP_SHIELD=1
+      - STATE_HOLDER=0
+      - REDIS_HOST=192.168.21.131
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REQUEST_TIMEOUT=25
+      - SYSTEM_LOCAL=fa_IR
+      - RESENDING_MAX_TRY=5
+      - REUPLOADING_MAX_TRY=5
+      - BOT_ADMINS_ID=2058851620
+      # Log config
+      - USE_GRAYLOG=2
+      - LOG_SOURCE=pg_hrtc_support_bot
+      - GRAYLOG_HOST=192.168.21.131
+      - GRAYLOG_PORT=12201
+      - LOG_LEVEL=20
+      - LOG_FACILITY_NAME=pg_hrtc_support_bot_facility
+      - MONITORING_HASH=cabb3f498ac5a037f669f658f1be08c3
+    depends_on:
+      - pg_hrtc_support_bot
+
