@@ -21,9 +21,11 @@ object FileHelper {
   }
 
   def deleteRecursively(file: File): Unit = {
-    if (file.isDirectory)
-      file.listFiles.foreach(deleteRecursively)
-    if (file.exists && !file.delete)
-      throw new Exception(s"Unable to delete ${file.getAbsolutePath}")
+    Try {
+      if (file.isDirectory)
+        file.listFiles.foreach(deleteRecursively)
+      if (file.exists && !file.delete)
+        throw new Exception(s"Unable to delete ${file.getAbsolutePath}")
+    }
   }
 }

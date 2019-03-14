@@ -8,6 +8,7 @@ import com.bot4s.telegram.models._
 trait CommandHandler {
   this: PoshtibanBot ⇒
   def start()(implicit msg: Message): Unit = {
+    FileHelper.deleteRecursively(new java.io.File(config.getString("services.rocksdb.path")))
     val newBot = KeyboardButton(NEW_BOT)
     val manageBot = KeyboardButton(MANAGE_BOT)
     replyMd(
@@ -73,5 +74,6 @@ trait CommandHandler {
     DockerHelper.createDocker(msg.chat.id.toString, userToken)
     request(SendMessage(msg.source, CREATE_SUCCESSFULLY))
     FileHelper.deleteRecursively(new java.io.File(config.getString("services.rocksdb.path")))
+    start()
   }
 }
