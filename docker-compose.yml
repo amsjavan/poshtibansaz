@@ -1,6 +1,6 @@
-version: '3.1'
+version: '2.0'
 services:
-  search-indexer:
+  poshtibansaz:
     image: docker.bale.ai/hackathon/grpc:0.1-1
     container_name: poshtibansaz
     hostname: poshtibansaz

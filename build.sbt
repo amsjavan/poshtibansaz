@@ -1,7 +1,10 @@
 import scalariform.formatter.preferences._
 import ai.bale.Dependencies
 
-name := "poshtiban-saz"
+enablePlugins(DockerPlugin)
+enablePlugins(JavaServerAppPackaging)
+
+name := "poshtibansaz"
 
 scalaVersion := "2.12.8"
 

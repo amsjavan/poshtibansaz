@@ -7,10 +7,10 @@ Poshtibansaz Bot
 * Creates markdown version note
 * Publish local docker 
 
-    ```./sbt docker:publishLocal```
+    ```BUILD_NUMBER=1 sbt docker:publishLocal```
 
 * Login and push 
 
     ```docker login docker.bale.ai ```
 
-    ```docker push  docker.bale.ai/hackathon/grpc:0.1.0```
+    ```docker push  docker.bale.ai/hackathon/grpc:0.1.1```
