@@ -1,11 +1,14 @@
 import scalariform.formatter.preferences._
 import ai.bale.Dependencies
 
-name := "poshtiban-saz"
+enablePlugins(DockerPlugin)
+enablePlugins(JavaServerAppPackaging)
 
-version := "0.1"
+name := "poshtibansaz"
 
 scalaVersion := "2.12.8"
+
+Dependencies.core
 
 scalariformPreferences := scalariformPreferences.value
   .setPreference(RewriteArrowSymbols, true)
@@ -13,4 +16,8 @@ scalariformPreferences := scalariformPreferences.value
   .setPreference(AlignSingleLineCaseStatements, true)
   .setPreference(SpacesAroundMultiImports, true)
 
-Dependencies.core
+dockerBaseImage := "docker.bale.ai/openjdk:8"
+packageName in Docker := "docker.bale.ai/hackathon/grpc"
+version in Docker := (version in ThisBuild).value
+dockerUpdateLatest := false
+

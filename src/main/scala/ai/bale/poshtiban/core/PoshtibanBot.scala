@@ -35,17 +35,13 @@ class PoshtibanBot(token: String) extends BaleBaseBot(token)
 
       case Some(txt) if txt.contains(NEW_BOT) ⇒
         logger.debug("new bot state")
-        request(SendMessage(msg.source, "لطفا نام بازو را وارد کنید."))
-        setChatState("NEW_BOT")
+        request(SendMessage(msg.source, "لطفا توکن بازوی خود را وارد کنید"))
+        setChatState("BOT_TOKEN")
 
       case Some(txt) if txt.contains(MANAGE_BOT) ⇒
         request(SendMessage(msg.source, "در حال آماده سازی..."))
 
-      case Some(txt) if getChatState.exists(_.equals("NEW_BOT")) ⇒
-        request(SendMessage(msg.source, "لطفا شناسه مورد نظر خود را انتخاب کنید."))
-        setChatState("NICKNAME")
-
-      case Some(txt) if getChatState.exists(_.equals("NICKNAME")) ⇒
+      case Some(txt) if getChatState.exists(_.equals("BOT_TOKEN")) ⇒
         replyMd(
           text = "آیا بازوی شما دارای بخش سوالات متداول باشد؟",
           replyMarkup = Some(ReplyKeyboardMarkup.singleRow(Seq(yesButton, noButton, returnButton))))
