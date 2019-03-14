@@ -1,4 +1,4 @@
-package ai.bale.core
+package ai.bale.sdk
 
 import com.bot4s.telegram.models.Message
 

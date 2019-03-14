@@ -1,4 +1,4 @@
-package ai.bale.core
+package ai.bale.sdk
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http

@@ -1,6 +1,6 @@
 package ai.bale.poshtiban
 
-import ai.bale.core.BaleAkkaHttpClient
+import ai.bale.sdk.BaleAkkaHttpClient
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.bot4s.telegram.api.TelegramBot

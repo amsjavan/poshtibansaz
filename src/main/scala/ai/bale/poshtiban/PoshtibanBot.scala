@@ -1,6 +1,6 @@
 package ai.bale.poshtiban
 
-import ai.bale.core.{ FixedBalePolling, PerChatState }
+import ai.bale.sdk.{ FixedBalePolling, PerChatState }
 import akka.actor.ActorSystem
 import akka.event.Logging
 import com.bot4s.telegram.api.declarative.Commands
